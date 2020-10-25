@@ -5,7 +5,7 @@ import styles from './Home.styles';
 
 const getRandomInteger = (min, max) => Math.round(min - 0.5 + Math.random() * (max - min + 1));
 const min = 1;
-const max = 10;
+const max = 100;
 
 function HomeScreen() {
   const [gameStage, setGameStage] = useState({
