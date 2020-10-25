@@ -1,26 +1,94 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Button } from 'react-native';
-import * as FileSystem from 'expo-file-system';
+import { Text, View, Button, TextInput } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// import studentsData from '../../assets/data.json';
 import styles from './Home.styles';
 
-
 function HomeScreen() {
-
   const [data, setData] = useState(null);
+  const [name, setName] = useState('');
+  const [faculty, setFaculty] = useState('');
+  const [group, setGroup] = useState('');
+  const key = 'students_data';
 
   useEffect(() => {
-    (async () => {
-      setData(await FileSystem.readAsStringAsync('file:///C:/Users/mrred/Desktop/react-native/lab-6/assets/data.json', {}));
-    })();
+    const init = async () => {
+      const fetchedData = await loadDeviceData(key);
+      setData(fetchedData);
+    }
+    init();
+
+    // return () => {
+    //   AsyncStorage.removeItem(key);
+    // }
   }, []);
 
-  console.log(data);
+  const saveDeviceData = async (key, data) => {
+    try {
+        if (!name || !faculty || !group) return;
+        const newData = [
+          ...data,
+          {
+            id: Math.random(),
+            name,
+            faculty,
+            group,
+          }
+        ];
+        await AsyncStorage.setItem(key, JSON.stringify(newData));
+    } catch (e) {
+      console.log(`Error saving data for key ${key}`, data);
+      throw e;
+    }
+  };
+
+  const loadDeviceData = async (key) => {
+    try {
+        const fetchedData = JSON.parse(await AsyncStorage.getItem(key));
+        setData(fetchedData);
+    } catch (e) {
+      console.log(`Error loading data for key ${key}`);
+      throw e;
+    }
+  };
 
   return (
     <View style={styles.container}>
-
+      {data &&
+      <View style={styles.studentsData}>
+        {data.map((studentData) => <Text key={studentData.id}>{`Name: ${studentData.name}, faculty: ${studentData.faculty}, group: ${studentData.group}`}</Text>)}
+      </View>}
+      <View>
+        <TextInput
+          style={styles.input}
+          onChangeText={(v) => setName(v)}
+          value={name}
+        />
+        <TextInput
+          style={styles.input}
+          onChangeText={(v) => setFaculty(v)}
+          value={faculty}
+        />
+        <TextInput
+          style={styles.input}
+          onChangeText={(v) => setGroup(v)}
+          value={group}
+        />
+      </View>
+      <View style={styles.button}>
+        <Button
+          title="Load Data"
+          onPress={() => loadDeviceData(key, data)}
+          color={'#fff'}
+        />
+      </View>
+      <View style={styles.button}>
+        <Button
+          title="Save Data"
+          onPress={() => saveDeviceData(key, data)}
+          color={'#fff'}
+        />
+      </View>
     </View>
   );
 }

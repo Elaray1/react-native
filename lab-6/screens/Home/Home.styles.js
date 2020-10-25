@@ -7,6 +7,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   button: {
+    marginTop: 20,
     backgroundColor: '#C03B73',
     minWidth: 200,
     padding: 10,
@@ -16,5 +17,17 @@ export default StyleSheet.create({
   },
   text: {
     marginTop: 20,
+  },
+  input: {
+    marginBottom: 20,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderRadius: 10,
+    width: 200,
+    height: 40,
+    padding: 10,
+    marginHorizontal: 10,
+  },
+  studentsData: {
+    marginBottom: 30,
   },
 });
