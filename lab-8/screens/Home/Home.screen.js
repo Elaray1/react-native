@@ -1,25 +1,69 @@
-import React, { useState } from 'react';
-import { Text, View, Button } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { Text, View, Linking, TouchableOpacity, Button } from 'react-native';
 
 import styles from './Home.styles';
 
 function HomeScreen() {
-  const [isGreeting, setIsGreeting] = useState(null);
+  const [urlHistory, setUrlHistory] = useState([]);
+
+  const onOpenUrl = useCallback((url, urlLabel) => {
+    setUrlHistory([
+      ...urlHistory,
+      urlLabel,
+    ]);
+    Linking.openURL(url);
+  }, [urlHistory, setUrlHistory]);
+
+  const onClearHistory = useCallback(() => {
+    setUrlHistory([]);
+  }, [setUrlHistory]);
 
   return (
     <View style={styles.container}>
-      <View style={styles.button}>
+      <View style={styles.urlHistory}>
+        <Text>{urlHistory.join(', ')}</Text>
+      </View>
+      <TouchableOpacity
+        style={styles.button}
+        activeOpacity={0.7}
+      >
         <Button
-          onPress={() => setIsGreeting(!isGreeting)}
-          title={isGreeting ?  'Say goodbye' : 'Say hello'}
+          title="VK"
+          onPress={() => onOpenUrl('https://vk.com/elaray', 'VK')}
           color="#fff"
         />
-      </View>
-      <Text
-        style={styles.text}
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.button}
+        activeOpacity={0.7}
       >
-        {isGreeting !== null && (isGreeting ?  'Hi (づ｡◕‿‿◕｡)づ' : 'See you later |◔◡◉|')}
-      </Text>
+        <Button
+          title="LinkedIn"
+          onPress={() => onOpenUrl('https://www.linkedin.com/in/egor-emelyanov-33a2101a0/', 'LinkedIn')}
+          color="#fff"
+        />
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.button}
+        activeOpacity={0.7}
+      >
+        <Button
+          title="GitHub"
+          onPress={() => onOpenUrl('https://github.com/Elaray1', 'Github')}
+          color="#fff"
+        />
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={[styles.button, styles.clearButton]}
+        activeOpacity={0.7}
+      >
+        <Button
+          title="Clear History"
+          onPress={onClearHistory}
+          color="#fff"
+        />
+      </TouchableOpacity>
     </View>
   );
 }

@@ -7,6 +7,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   button: {
+    marginBottom: 20,
     backgroundColor: '#C03B73',
     minWidth: 200,
     padding: 10,
@@ -16,5 +17,11 @@ export default StyleSheet.create({
   },
   text: {
     marginTop: 20,
+  },
+  urlHistory: {
+    marginBottom: 40,
+  },
+  clearButton: {
+    backgroundColor: '#505050',
   },
 });
