@@ -7,6 +7,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   button: {
+    marginBottom: 20,
     backgroundColor: '#C03B73',
     minWidth: 200,
     padding: 10,
