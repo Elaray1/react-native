@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './Home.styles';
 
 function HomeScreen() {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
   const [name, setName] = useState('');
   const [faculty, setFaculty] = useState('');
   const [group, setGroup] = useState('');
@@ -26,8 +26,9 @@ function HomeScreen() {
   const saveDeviceData = async (key, data) => {
     try {
         if (!name || !faculty || !group) return;
+        const oldData = data || [];
         const newData = [
-          ...data,
+          ...oldData,
           {
             id: Math.random(),
             name,
